@@ -2,6 +2,17 @@
 Changelog for package rmw_connextdds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.17.0 (2023-08-21)
+-------------------
+* Update to C++17 (`#125 <https://github.com/ros2/rmw_connextdds/issues/125>`_)
+* Contributors: Chris Lalancette
+
+0.16.0 (2023-07-11)
+-------------------
+
+0.15.1 (2023-05-11)
+-------------------
+
 0.15.0 (2023-04-27)
 -------------------
 
