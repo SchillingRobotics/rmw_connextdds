@@ -47,6 +47,7 @@ struct rmw_context_impl_s
 {
 public:
   rmw_dds_common::Context common;
+  std::mutex common_mutex;
   rmw_context_t * base;
 
   DDS_DomainId_t domain_id;
@@ -175,8 +176,6 @@ private:
   // Finalize the DomainParticipant associated with the context.
   rmw_ret_t
   finalize_participant();
-
-  DDS_DomainParticipantFactory * factory{nullptr};
 
   /* Manage the memory of the domain tag */
   char * domain_tag{nullptr};

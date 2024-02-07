@@ -2,6 +2,9 @@
 Changelog for package rmw_connextddsmicro
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.19.0 (2023-11-06)
+-------------------
+
 0.18.0 (2023-10-04)
 -------------------
 * Add rmw count clients services impl (`#93 <https://github.com/ros2/rmw_connextdds/issues/93>`_)
