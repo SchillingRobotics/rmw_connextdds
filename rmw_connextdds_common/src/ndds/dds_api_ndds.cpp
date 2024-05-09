@@ -14,7 +14,10 @@
 
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 #include <map>
+#include <new>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -38,6 +41,22 @@ struct rmw_connextdds_api_pro
 };
 
 rmw_connextdds_api_pro * RMW_Connext_fv_FactoryContext = nullptr;
+
+rmw_ret_t
+rmw_connextdds_get_current_time(
+  DDS_DomainParticipant * domain_participant,
+  struct DDS_Time_t * current_time)
+{
+  // Use DDS_DomainParticipant_get_current_time only with Micro since Pro's
+  // implementation is pretty slow. See #120 for details.
+  UNUSED_ARG(domain_participant);
+  RTINtpTime now;
+  if (!RTIOsapiUtility_getTime(&now)) {
+    return DDS_RETCODE_ERROR;
+  }
+  RTINtpTime_unpackToNanosec(current_time->sec, current_time->nanosec, now);
+  return DDS_RETCODE_OK;
+}
 
 rmw_ret_t
 rmw_connextdds_set_log_verbosity(rmw_log_severity_t severity)
@@ -719,15 +738,19 @@ rmw_ret_t
 rmw_connextdds_write_message(
   RMW_Connext_Publisher * const pub,
   RMW_Connext_Message * const message,
-  int64_t * const sn_out)
+  RMW_Connext_WriteParams * const params)
 {
+  DDS_WriteParams_t write_params = DDS_WRITEPARAMS_DEFAULT;
+  if (nullptr != params && !DDS_Time_is_invalid(&params->timestamp)) {
+    write_params.source_timestamp = params->timestamp;
+  }
+
   if (pub->message_type_support()->type_requestreply() &&
     pub->message_type_support()->ctx()->request_reply_mapping ==
     RMW_Connext_RequestReplyMapping::Extended)
   {
     const RMW_Connext_RequestReplyMessage * const rr_msg =
       reinterpret_cast<const RMW_Connext_RequestReplyMessage *>(message->user_data);
-    DDS_WriteParams_t write_params = DDS_WRITEPARAMS_DEFAULT;
 
     // Propagate the request's sample identity via the related_sample_identity field
     int64_t sn_ros = rr_msg->sn >= 0 ? rr_msg->sn : 0;
@@ -746,34 +769,20 @@ rmw_connextdds_write_message(
       // enable WriteParams::replace_auto to retrieve SN of published message
       write_params.replace_auto = DDS_BOOLEAN_TRUE;
     }
-
-    if (DDS_RETCODE_OK !=
-      DDS_DataWriter_write_w_params_untypedI(
-        pub->writer(), message, &write_params))
-    {
-      RMW_CONNEXT_LOG_ERROR_SET(
-        "failed to write request/reply message to DDS")
-      return RMW_RET_ERROR;
-    }
-
-    if (rr_msg->request) {
-      int64_t sn = 0;
-
-      // Read assigned sn from write_params
-      rmw_connextdds_sn_dds_to_ros(
-        write_params.identity.sequence_number, sn);
-      *sn_out = sn;
-    }
-
-    return RMW_RET_OK;
   }
 
   if (DDS_RETCODE_OK !=
-    DDS_DataWriter_write_untypedI(
-      pub->writer(), message, &DDS_HANDLE_NIL))
+    DDS_DataWriter_write_w_params_untypedI(
+      pub->writer(), message, &write_params))
   {
     RMW_CONNEXT_LOG_ERROR_SET("failed to write message to DDS")
     return RMW_RET_ERROR;
+  }
+
+  if (nullptr != params && write_params.replace_auto) {
+    // Read assigned sn from write_params
+    rmw_connextdds_sn_dds_to_ros(
+      write_params.identity.sequence_number, params->sequence_number);
   }
 
   return RMW_RET_OK;

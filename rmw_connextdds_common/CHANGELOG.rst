@@ -2,6 +2,24 @@
 Changelog for package rmw_connextdds_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.0 (2024-03-28)
+-------------------
+* Support Fast CDR v2 (`#141 <https://github.com/ros2/rmw_connextdds/issues/141>`_)
+* Contributors: Miguel Company
+
+0.20.1 (2024-03-09)
+-------------------
+* Fix the rmw_connextdds_common build with gcc 13.2. (`#142 <https://github.com/ros2/rmw_connextdds/issues/142>`_)
+  The most important fix here is to #include <cstdint>,
+  but also make sure we #include for all used STL functions.
+* Fix basic request reply mapping for ConnextDDS Pro (`#139 <https://github.com/ros2/rmw_connextdds/issues/139>`_)
+* Contributors: Chris Lalancette, Christopher Wecht
+
+0.20.0 (2024-01-24)
+-------------------
+* Add ros2_tracing tracepoints (`#120 <https://github.com/ros2/rmw_connextdds/issues/120>`_)
+* Contributors: Christopher Wecht
+
 0.19.0 (2023-11-06)
 -------------------
 * avoid using dds common public mutex directly (`#134 <https://github.com/ros2/rmw_connextdds/issues/134>`_)
