@@ -2,6 +2,34 @@
 Changelog for package rmw_connextdds_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.24.1 (2024-07-29)
+-------------------
+* remove rmw_localhost_only_t. (`#156 <https://github.com/ros2/rmw_connextdds/issues/156>`_)
+* Contributors: Tomoya Fujita
+
+0.24.0 (2024-06-17)
+-------------------
+* Make rmw_service_server_is_available return RMW_RET_INVALID_ARGUMENT (`#150 <https://github.com/ros2/rmw_connextdds/issues/150>`_)
+* Use rmw_namespace_validation_result_string() in rmw_create_node (`#151 <https://github.com/ros2/rmw_connextdds/issues/151>`_)
+* Make rmw_destroy_wait_set return RMW_RET_INVALID_ARGUMENT (`#152 <https://github.com/ros2/rmw_connextdds/issues/152>`_)
+* Contributors: Christophe Bedard
+
+0.23.0 (2024-04-26)
+-------------------
+
+0.22.0 (2024-04-09)
+-------------------
+* Revert "Mitigate discovery race condition between clients and services (`#132 <https://github.com/ros2/rmw_connextdds/issues/132>`_)" (`#146 <https://github.com/ros2/rmw_connextdds/issues/146>`_)
+  This reverts commit 7c95abbfc4559b293ebf5e94e20250bdd99d3ac6.
+* Mitigate discovery race condition between clients and services (`#132 <https://github.com/ros2/rmw_connextdds/issues/132>`_)
+  * Mitigate discovery race condition between clients and services.
+* Add: tracepoint for subscribe serialized_message (`#145 <https://github.com/ros2/rmw_connextdds/issues/145>`_)
+  * Add: tracepoint for take_serialized_message
+  * Fix: TRACETOOLS_TRACEPOINT args
+  * Update rmw_connextdds_common/src/common/rmw_subscription.cpp
+  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
+* Contributors: Andrea Sorbini, Chris Lalancette, h-suzuki-isp
+
 0.21.0 (2024-03-28)
 -------------------
 * Support Fast CDR v2 (`#141 <https://github.com/ros2/rmw_connextdds/issues/141>`_)
