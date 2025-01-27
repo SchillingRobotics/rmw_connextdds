@@ -2,6 +2,11 @@
 Changelog for package rmw_connextdds_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.25.0 (2024-12-20)
+-------------------
+* Instrument client/service for end-to-end request/response tracking (`#163 <https://github.com/ros2/rmw_connextdds/issues/163>`_)
+* Contributors: Christophe Bedard
+
 0.24.2 (2024-10-03)
 -------------------
 * fix: "Failed to parse type hash" message was overly spammy (ros2-50) (`#149 <https://github.com/ros2/rmw_connextdds/issues/149>`_)
